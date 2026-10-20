@@ -40,7 +40,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 GOOGLE_DRIVE_FOLDER_ID = os.environ.get('GOOGLE_DRIVE_FOLDER_ID', '')
 
-def get_drive_service():
+def get_drive_service():    
     """สร้าง Client เชื่อมต่อ Google Drive API ผ่าน Service Account"""
     try:
         # 1. ตรวจสอบผ่านตัวแปรระบบบน Render (GOOGLE_CREDENTIALS)
