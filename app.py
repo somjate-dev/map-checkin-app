@@ -38,7 +38,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 # 2. ฟังก์ชัน Google Drive API Service
 # ==========================================
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
-GOOGLE_DRIVE_FOLDER_ID = os.environ.get('GOOGLE_DRIVE_FOLDER_ID', '')
+GOOGLE_DRIVE_FOLDER_ID = os.environ.get('1C4VP75saXvlbs27-a0Dls-Z4zu9SCqLy', '')
 
 def get_drive_service():    
     """สร้าง Client เชื่อมต่อ Google Drive API ผ่าน Service Account"""
