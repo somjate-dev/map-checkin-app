@@ -3,38 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบหลังบ้านผู้บริหาร - Map Check-In</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>แดชบอร์ดผู้ดูแลระบบ - ตรวจสอบการเช็คอิน</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Sarabun', sans-serif; background-color: #f1f3f5; }
-        .admin-container { max-width: 1000px; margin: 30px auto; }
-        .thumbnail-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .thumbnail-img:hover { transform: scale(1.1); }
+        body { font-family: 'Sarabun', sans-serif; background-color: #f0f2f5; }
+        .admin-box { max-width: 1100px; margin: 30px auto; }
+        .drive-thumb {
+            width: 75px; height: 75px; object-fit: cover;
+            border-radius: 8px; border: 1px solid #ddd;
+            transition: transform 0.2s;
+        }
+        .drive-thumb:hover { transform: scale(1.15); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
-<div class="container admin-container">
-    <div class="card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+<div class="container admin-box">
+    <div class="card p-4 shadow-sm border-0">
+        <div class="d-flex justify-content-between align-items-center pb-3 border-bottom mb-3">
             <div>
-                <h3 class="fw-bold mb-0 text-success">👮 แผงผู้ควบคุมระบบ (Admin)</h3>
-                <small class="text-muted">ยินดีต้อนรับ: เจ้าหน้าที่ {{ username }}</small>
+                <h4 class="fw-bold mb-0 text-success">👮 แดชบอร์ดตรวจสอบการเช็คอิน</h4>
+                <small class="text-muted">ผู้ดูแลระบบ: {{ username }} | จัดเก็บข้อมูลถาวรบน Supabase & Google Drive</small>
             </div>
-            <a href="/logout" class="btn btn-danger btn-sm">ออกจากระบบ</a>
+            <a href="/logout" class="btn btn-outline-danger btn-sm">ออกจากระบบ</a>
         </div>
 
-        <h5 class="fw-bold text-secondary mb-3">📋 ตารางบันทึกการเช็คอินล่าสุด</h5>
-        
         <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th>ลำดับ</th>
-                        <th>ผู้ใช้</th>
-                        <th>รูปภาพหลักฐาน</th>
-                        <th>พิกัดเช็คอิน (ละติจูด, ลองจิจูด)</th>
+                        <th style="width: 50px;">ลำดับ</th>
+                        <th>ผู้ใช้งาน</th>
+                        <th>ภาพถ่าย (Google Drive)</th>
+                        <th>พิกัด GPS</th>
                         <th>วัน-เวลาเช็คอิน</th>
                         <th>แผนที่นำทาง</th>
                     </tr>
@@ -46,17 +48,20 @@
                             <td>{{ loop.index }}</td>
                             <td><span class="badge bg-secondary">{{ record.username }}</span></td>
                             <td>
-                                <a href="/static/uploads/{{ record.image_filename }}" target="_blank">
-                                    <img src="/static/uploads/{{ record.image_filename }}" class="thumbnail-img img-thumbnail" alt="หลักฐานเช็คอิน">
+                                <a href="https://drive.google.com/file/d/{{ record.drive_file_id }}/view?usp=sharing" target="_blank" title="คลิกดูภาพต้นฉบับบน Google Drive">
+                                    <img src="https://drive.google.com/thumbnail?id={{ record.drive_file_id }}&sz=w200" 
+                                         class="drive-thumb" 
+                                         alt="ภาพถ่ายเช็คอิน"
+                                         onerror="this.onerror=null; this.src='https://placehold.co/75x75?text=ดูบน+Drive';">
                                 </a>
                             </td>
                             <td>
-                                <code>{{ record.latitude }}</code> , <br>
-                                <code>{{ record.longitude }}</code>
+                                <small class="text-muted">Lat:</small> <code>{{ record.latitude }}</code><br>
+                                <small class="text-muted">Lon:</small> <code>{{ record.longitude }}</code>
                             </td>
-                            <td>{{ record.timestamp.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                            <td>{{ record.timestamp.strftime('%d/%m/%Y %H:%M:%S') }}</td>
                             <td>
-                                <a href="https://www.google.com/maps/search/?api=1&query={{ record.latitude }},{{ record.longitude }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ record.latitude }},{{ record.longitude }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     เปิดใน Google Maps 🗺️
                                 </a>
                             </td>
@@ -64,7 +69,7 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-4">ยังไม่พบประวัติข้อมูลเช็คอินในวันนี้</td>
+                            <td colspan="6" class="text-center text-muted py-4">ยังไม่พบข้อมูลการเช็คอินในระบบ</td>
                         </tr>
                     {% endif %}
                 </tbody>

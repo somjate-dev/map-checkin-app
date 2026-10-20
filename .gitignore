@@ -1,0 +1,15 @@
+# Python virtual environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Database files
+*.db
+*.sqlite3
+instance/
+
+# Temporary uploads & Secrets
+temp_uploads/
+google-credentials.json
+.env
