@@ -42,7 +42,19 @@ def get_drive_service():
     """สร้าง Client เชื่อมต่อ Google Drive API ผ่าน Service Account"""
     try:
         # 1. ตรวจสอบผ่าน Environment Variable (บน Render)
-        creds_json = os.environ.get('GOOGLE_CREDENTIALS')
+        creds_json = os.environ.get({
+  "type": "service_account",
+  "project_id": "demomoc",
+  "private_key_id": "6fc1f1cbdb4b16b5e094264144226907414b2c4b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDcyv4nRlSawsDo\nj4aDL5PoyEiDAtlBZHnz+Tg9RBrK5xm3xQUeEU+6vfJVzkXkW0Jyi0UsJpU2BqdH\nj7Rwdz99hcgLUzjnTvOCvlv0lsgJdJLc0piY0SJYQCwlIVsiGTqm3hn2BqTEkc46\nCoOxTBG4xkbkZhrZ9LY8eKOack+03AHH+Lbx86neiJsEQ2Fvxhq5JXenADGcQbv/\nqWQkbvOkWkW0C0+fKF8I71fKb/4qOSItk0PBhorq2j9nqyo5JGIW/fn/O1mit70m\ntQEhfp6FSuTCCyWm2cgamBcTzrTAmNpV8sO1BQ6y503wV2HMGA7TtUtkDW1dFsql\nd2yepe+zAgMBAAECggEARiRm4WtCbXf5eOg/v2VaA9W804IQKuoUpCFEcJI2QMdy\nMCNzIL43Kgg1+HRzV7x2O5VrAD+xn1w1wFIy7Je1n9bkWlSx+ynlyl9XLzjHi9lw\n3p44xDOMSaT5YUJbhVWmgGSGstYheiEn9uBoPecAqkazNtQJK7zGOCfLMcGm+Llk\nzxIQhXxxtv7yQlO+CB6HRrKfIvaxfUlmtJZbnuZhLIQe+P/AMd4hoeJKYwf5GJIr\npQ5bcq+YP98ujVxiSZafKlxD8+XBx8AD6KwIhpiEsaIc+FAKXCYkNYpbkwA/8WrD\nHcAK6XALRfNLByy9WctJDS52ViHnoW3zKv6ssA+KAQKBgQD5B19lQ0KEaTgKeSeg\ncr3LwV8Uymc/rE0TVBHaTyxWoWrUzMskx7jmASw9ZpJkqCJiQuHZ7ln4uMIDXuHf\nzVaemQDQ0xFRt6zuTc+fBPvY7gevh/xrFYGZbGrkIOLnVYMaf1L2HviwIMG/GGPM\nqzEw/Kkt0bgPI6iScR3r893eQQKBgQDi+UWpufFwXx/0tugCKID2hVnQ0QROmWgL\nHHR30QF+VaVggu6bQUyCbJbVqh6q9iu/lP2kPfaUqVKJS33+wK7qlLf6/Lr0OekS\ng+heY+mS9GGrbx00fcNl3j8WjaeMecHvJYZd+Hov+DhVg7P7WY2pdDHLxa2U4BgK\n8a7wLn348wKBgQC3pyRHPc80b5SQxMDgpz4pojZI0uxKHPvKoVl5MqJ0UR7ESTQX\nr+NAXOUPczHLYePZq5F8czePIlKSwcq6jmivFg9v8fj31wmFxYS0taw2U3T/kr4p\nCvdE+pvqGga8rGe/ht7b/ANTgRThpU8UhbwFcJAj5mJjZ9zOAvYaKQMbAQKBgClc\nscQ/XW9T9nfbCSaziOTj4j06ieVk8V/s/JCFJxeFthCDa8YhPTcbYNVpHhObrtdH\n6H0QyanHvYHFnx1YsceP+IMloVA2aXH1Vdg1rvAX1uCt7A2PyZb7zFVo1Rq1aZES\nLo1bZbDuNB3pVVg9tqIlyZlP2dUijV8ZMf8VCeHfAoGBAJfPyjbxLNqt9nEgSxnD\nEzZyVgwniUY+a6F/i92JVEwn/3HxFEXa/+6fIRyR8kDqf75PxarkLiQaSPcK9s/M\n3C0tK58iAryXsZ9Kk+dclrtTnqDdqyyupYl47CA0vts+B9XxL0RNFZGArb5N1lTk\nrRbx8FF6rct3sGelPA47MhYw\n-----END PRIVATE KEY-----\n",
+  "client_email": "drive-uploader@demomoc.iam.gserviceaccount.com",
+  "client_id": "109427306539459144985",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/drive-uploader%40demomoc.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+})
         if creds_json:
             info = json.loads(creds_json) if isinstance(creds_json, str) else creds_json
             creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
